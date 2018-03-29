@@ -70,14 +70,22 @@ int main (int argc, char **argv) {
   end = (rank +1)* (N)/(size);
 
   
-  MPI_Barrier(MPI_COMM_WORLD);
-
-
+  int flag = 0;
+  MPI_Request sr;
   //loop through the values from 'start' to 'end'
   for (unsigned int i=start;i<end;i++) {
     if (modExp(g,i+1,p)==h)
       printf("Secret key found! x = %u \n", i+1);
-  }
+      for (int j = 0; j < size; j++) {
+        MPI_Isend(&j,1,MPI_INT,j,1,MPI_COMM_WORLD,&sr);
+    }
+  
+
+  MPI_Iprobe(MPI_ANY_SOURCE,0,MPI_COMM_WORLD,&flag,MPI_STATUS_IGNORE);
+  if (flag != 0) {
+    break;
+}
+}
   double endTime = MPI_Wtime();
   double runTime = endTime - startTime;
   double throughPut;
