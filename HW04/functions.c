@@ -255,19 +255,19 @@ void convertZToString(unsigned int  *Z,      unsigned int Nints,
   case 2:
     #pragma omp parallel for
     for (int i = 0; i < Nints; i++) {
-      unsigned int held = Z[i];
-      string[i*2] = (unsigned char)(held >> 8);
-      held = Z[i];
+      unsigned int temp = Z[i];
+      string[i*2] = (unsigned char)(temp >> 8);
+      temp = Z[i];
       string[i*2 + 1] = (unsigned char)((Z[i] << 8) >> 8);
 }
     break;
   case 3:
     #pragma omp parallel for
     for (int i = 0; i < Nints; i++) {
-      unsigned int held = Z[i];
-      string[i*3] = (unsigned char)(held >> 16);
-      string[i*3 + 1] = (unsigned char)((held << 8) >> 16);
-      string[i*3 + 2] = (unsigned char)((held << 16) >> 16);
+      unsigned int temp = Z[i];
+      string[i*3] = (unsigned char)(temp >> 16);
+      string[i*3 + 1] = (unsigned char)((temp << 8) >> 16);
+      string[i*3 + 2] = (unsigned char)((temp << 16) >> 16);
 }
   break;
 }  
